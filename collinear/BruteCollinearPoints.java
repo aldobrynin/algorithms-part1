@@ -11,11 +11,12 @@ public class BruteCollinearPoints {
     private final ArrayList<LineSegment> segments = new ArrayList<>();
 
     public BruteCollinearPoints(Point[] points) {
-        if (points == null) throw new IllegalArgumentException();
+        if (points == null || points.length == 0 || hasNull(points))
+            throw new IllegalArgumentException();
 
         Point[] sortedPoints = points.clone();
         Arrays.sort(sortedPoints);
-        if (sortedPoints.length == 0 || sortedPoints[0] == null || hasDoubleOrNull(sortedPoints))
+        if (hasDouble(sortedPoints))
             throw new IllegalArgumentException();
 
         for (int i = 0; i < sortedPoints.length; i++) {
@@ -50,9 +51,16 @@ public class BruteCollinearPoints {
         return segments.toArray(new LineSegment[n]);
     }
 
-    private boolean hasDoubleOrNull(Point[] points) {
+    private boolean hasDouble(Point[] points) {
         for (int i = 1; i < points.length; i++)
-            if (points[i] == null || points[i].compareTo(points[i - 1]) == 0)
+            if (points[i].compareTo(points[i - 1]) == 0)
+                return true;
+        return false;
+    }
+
+    private boolean hasNull(Point[] points) {
+        for (int i = 0; i < points.length; i++)
+            if (points[i] == null)
                 return true;
         return false;
     }

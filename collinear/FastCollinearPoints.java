@@ -11,11 +11,12 @@ public class FastCollinearPoints {
     private final ArrayList<LineSegment> segments = new ArrayList<LineSegment>();
 
     public FastCollinearPoints(Point[] points) {
-        if (points == null) throw new IllegalArgumentException();
+        if (points == null || points.length == 0 || hasNull(points))
+            throw new IllegalArgumentException();
 
         Point[] copy = points.clone();
         Arrays.sort(copy);
-        if (copy.length == 0 || copy[0] == null || hasDoubleOrNull(copy))
+        if (hasDouble(copy))
             throw new IllegalArgumentException();
 
         for (int i = 0; i < copy.length - 3; i++) {
@@ -27,7 +28,7 @@ public class FastCollinearPoints {
                         && Double.compare(copy[0].slopeTo(copy[first]), copy[0].slopeTo(copy[last]))
                         == 0)
                     last++;
-                
+
                 if (last - first >= 3 && copy[0].compareTo(copy[first]) < 0)
                     segments.add(new LineSegment(copy[0], copy[last - 1]));
             }
@@ -43,11 +44,17 @@ public class FastCollinearPoints {
         return segments.toArray(new LineSegment[n]);
     }
 
-    private boolean hasDoubleOrNull(Point[] points) {
+    private boolean hasDouble(Point[] points) {
         for (int i = 1; i < points.length; i++)
-            if (points[i] == null || points[i].compareTo(points[i - 1]) == 0)
+            if (points[i].compareTo(points[i - 1]) == 0)
                 return true;
         return false;
     }
 
+    private boolean hasNull(Point[] points) {
+        for (int i = 0; i < points.length; i++)
+            if (points[i] == null)
+                return true;
+        return false;
+    }
 }
