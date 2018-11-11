@@ -5,7 +5,6 @@ public class Board {
     private final int[] blocks;
     private final int n;
     private final int manhattanDistance;
-    private final int hammingDistance;
 
     public Board(int[][] blocks) {
         n = blocks.length;
@@ -17,7 +16,6 @@ public class Board {
 
         int square = this.n * this.n;
         int manhattan = 0;
-        int hamming = 0;
         for (int i = 0; i < square; i++) {
             int expectedValue = (i + 1) % square;
             if (this.blocks[i] != expectedValue && this.blocks[i] != 0) {
@@ -25,12 +23,10 @@ public class Board {
                 int validCol = (this.blocks[i] - 1) % this.n;
                 int row = i / this.n;
                 int col = i % this.n;
-                hamming++;
                 manhattan += Math.abs(validRow - row) + Math.abs(validCol - col);
             }
         }
         this.manhattanDistance = manhattan;
-        this.hammingDistance = hamming;
     }
 
     public int dimension() {
@@ -38,7 +34,15 @@ public class Board {
     }
 
     public int hamming() {
-        return this.hammingDistance;
+        int hamming = 0;
+        int square = this.n * this.n;
+        for (int i = 0; i < square; i++) {
+            int expectedValue = (i + 1) % square;
+            if (this.blocks[i] != expectedValue && this.blocks[i] != 0) {
+                hamming++;
+            }
+        }
+        return hamming;
     }
 
     public int manhattan() {
@@ -54,8 +58,6 @@ public class Board {
     }
 
     public Board twin() {
-        int square = this.n * this.n;
-
         int first = -1, second = -1;
         int i = 0;
         while (first == -1 || second == -1) {
