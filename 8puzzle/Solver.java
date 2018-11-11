@@ -10,19 +10,21 @@ public class Solver {
         private final int moves;
         private final SearchNode previous;
         private final Board board;
+        private final int manhattan;
 
         public SearchNode(int moves, SearchNode prev, Board current) {
             this.moves = moves;
             this.previous = prev;
             this.board = current;
+            this.manhattan = board.manhattan();
         }
 
         @Override
         public int compareTo(SearchNode other) {
             int their = other.moves +
-                    (other.board != null ? other.board.manhattan() : 0);
+                    (other.board != null ? other.manhattan : 0);
             int our = this.moves +
-                    (this.board != null ? this.board.manhattan() : 0);
+                    (this.board != null ? this.manhattan : 0);
 
             return Integer.compare(our, their);
         }
