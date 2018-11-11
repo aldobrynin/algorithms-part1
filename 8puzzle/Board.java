@@ -1,6 +1,5 @@
 import edu.princeton.cs.algs4.Stack;
 import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.StdRandom;
 
 public class Board {
     private final int[] blocks;
@@ -15,7 +14,6 @@ public class Board {
         for (int i = 0; i < this.n; i++)
             for (int j = 0; j < this.n; j++)
                 this.blocks[i * this.n + j] = blocks[i][j];
-
 
         int square = this.n * this.n;
         int manhattan = 0;
@@ -33,7 +31,6 @@ public class Board {
         }
         this.manhattanDistance = manhattan;
         this.hammingDistance = hamming;
-
     }
 
     public int dimension() {
@@ -60,20 +57,20 @@ public class Board {
         int square = this.n * this.n;
 
         int first = -1, second = -1;
+        int i = 0;
         while (first == -1 || second == -1) {
-            int rnd = StdRandom.uniform(square);
-            if (this.blocks[rnd] == 0)
+            if (this.blocks[i] == 0)
                 continue;
-            if (first == -1) first = rnd;
-            else if (rnd != first) second = rnd;
+            if (first == -1) first = i;
+            else if (i != first) second = i;
+            i++;
         }
 
         return copyWithSwap(first / this.n, first % this.n, second / this.n,
                             second % this.n);
     }
 
-    public boolean equals(Object y)        // does this board equal y?
-    {
+    public boolean equals(Object y) {
         if (y == this) return true;
         if (y == null || getClass() != y.getClass())
             return false;
@@ -86,8 +83,7 @@ public class Board {
         return true;
     }
 
-    public Iterable<Board> neighbors()     // all neighboring boards
-    {
+    public Iterable<Board> neighbors() {
         Stack<Board> stack = new Stack<Board>();
         int square = this.n * this.n;
         int blankIndex = -1;
@@ -146,6 +142,7 @@ public class Board {
             for (int j = 0; j < n; j++)
                 blocks[i][j] = data[i * n + j];
         Board initial = new Board(blocks);
-        StdOut.print(initial.manhattan());
+        StdOut.print(initial.toString());
+        StdOut.print(initial.twin().toString());
     }
 }
