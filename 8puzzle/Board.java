@@ -1,10 +1,10 @@
+import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Stack;
 import edu.princeton.cs.algs4.StdOut;
 
 public class Board {
     private final int[] blocks;
     private final int n;
-    private final int manhattanDistance;
 
     public Board(int[][] blocks) {
         n = blocks.length;
@@ -13,20 +13,6 @@ public class Board {
         for (int i = 0; i < this.n; i++)
             for (int j = 0; j < this.n; j++)
                 this.blocks[i * this.n + j] = blocks[i][j];
-
-        int square = this.n * this.n;
-        int manhattan = 0;
-        for (int i = 0; i < square; i++) {
-            int expectedValue = (i + 1) % square;
-            if (this.blocks[i] != expectedValue && this.blocks[i] != 0) {
-                int validRow = (this.blocks[i] - 1) / this.n;
-                int validCol = (this.blocks[i] - 1) % this.n;
-                int row = i / this.n;
-                int col = i % this.n;
-                manhattan += Math.abs(validRow - row) + Math.abs(validCol - col);
-            }
-        }
-        this.manhattanDistance = manhattan;
     }
 
     public int dimension() {
@@ -46,7 +32,19 @@ public class Board {
     }
 
     public int manhattan() {
-        return this.manhattanDistance;
+        int square = this.n * this.n;
+        int manhattan = 0;
+        for (int i = 0; i < square; i++) {
+            int expectedValue = (i + 1) % square;
+            if (this.blocks[i] != expectedValue && this.blocks[i] != 0) {
+                int validRow = (this.blocks[i] - 1) / this.n;
+                int validCol = (this.blocks[i] - 1) % this.n;
+                int row = i / this.n;
+                int col = i % this.n;
+                manhattan += Math.abs(validRow - row) + Math.abs(validCol - col);
+            }
+        }
+        return manhattan;
     }
 
     public boolean isGoal() {
@@ -59,13 +57,13 @@ public class Board {
 
     public Board twin() {
         int first = -1, second = -1;
-        int i = 0;
+        int i = -1;
         while (first == -1 || second == -1) {
+            i++;
             if (this.blocks[i] == 0)
                 continue;
             if (first == -1) first = i;
-            else if (i != first) second = i;
-            i++;
+            else second = i;
         }
 
         return copyWithSwap(first / this.n, first % this.n, second / this.n,
@@ -115,11 +113,12 @@ public class Board {
                 tiles[i][j] = this.blocks[i * this.n + j];
             }
         }
-
-        int tmp = tiles[firstRow][firstCol];
-        tiles[firstRow][firstCol] = tiles[secondRow][secondCol];
-        tiles[secondRow][secondCol] = tmp;
-        return new Board(tiles);
+        
+        Board newBoard = new Board(tiles);
+        int tmp = newBoard.blocks[firstRow * n + firstCol];
+        newBoard.blocks[firstRow * n + firstCol] = newBoard.blocks[secondRow * n + secondCol];
+        newBoard.blocks[secondRow * n + secondCol] = tmp;
+        return newBoard;
     }
 
     public String toString() {
@@ -137,14 +136,14 @@ public class Board {
     }
 
     public static void main(String[] args) {
-        int n = 3;
-        int[] data = new int[] { 1, 2, 3, 0, 7, 6, 5, 4, 8 };
+        In in = new In(args[0]);
+        int n = in.readInt();
         int[][] blocks = new int[n][n];
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++)
-                blocks[i][j] = data[i * n + j];
+                blocks[i][j] = in.readInt();
         Board initial = new Board(blocks);
-        StdOut.print(initial.toString());
-        StdOut.print(initial.twin().toString());
+        StdOut.println(initial.toString());
+        StdOut.println(initial.twin().toString());
     }
 }
