@@ -5,7 +5,7 @@ import edu.princeton.cs.algs4.StdOut;
 
 public class Solver {
     private SearchNode finalNode;
-    
+
     private class SearchNode implements Comparable<SearchNode> {
         private final int moves;
         private final SearchNode previous;
@@ -65,7 +65,7 @@ public class Solver {
     }
 
     public int moves() {
-        return this.finalNode.moves;
+        return this.finalNode != null ? this.finalNode.moves : -1;
     }
 
     public Iterable<Board> solution() {
