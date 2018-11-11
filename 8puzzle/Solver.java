@@ -70,6 +70,7 @@ public class Solver {
 
     public Iterable<Board> solution() {
         Stack<Board> q = new Stack<>();
+        if (this.finalNode == null) return q;
         q.push(this.finalNode.board);
         for (SearchNode node = this.finalNode;
              node.previous != null; node = node.previous)
