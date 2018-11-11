@@ -4,6 +4,8 @@ import edu.princeton.cs.algs4.Stack;
 import edu.princeton.cs.algs4.StdOut;
 
 public class Solver {
+    private SearchNode finalNode;
+    
     private class SearchNode implements Comparable<SearchNode> {
         private final int moves;
         private final SearchNode previous;
@@ -25,8 +27,6 @@ public class Solver {
             return Integer.compare(our, their);
         }
     }
-
-    private SearchNode finalNode;
 
     public Solver(Board initial) {
         if (initial == null)
