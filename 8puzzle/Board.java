@@ -23,8 +23,8 @@ public class Board {
         for (int i = 0; i < square; i++) {
             int expectedValue = (i + 1) % square;
             if (this.blocks[i] != expectedValue && this.blocks[i] != 0) {
-                int validRow = this.blocks[i] / this.n;
-                int validCol = this.blocks[i] % this.n;
+                int validRow = (this.blocks[i] - 1) / this.n;
+                int validCol = (this.blocks[i] - 1) % this.n;
                 int row = i / this.n;
                 int col = i % this.n;
                 hamming++;
@@ -140,12 +140,12 @@ public class Board {
 
     public static void main(String[] args) {
         int n = 3;
+        int[] data = new int[] { 1, 2, 3, 0, 7, 6, 5, 4, 8 };
         int[][] blocks = new int[n][n];
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++)
-                blocks[i][j] = i * n + j;
+                blocks[i][j] = data[i * n + j];
         Board initial = new Board(blocks);
-        StdOut.print(initial.toString());
-        StdOut.print(initial.twin().toString());
+        StdOut.print(initial.manhattan());
     }
 }
