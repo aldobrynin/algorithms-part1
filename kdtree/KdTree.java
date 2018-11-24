@@ -98,7 +98,7 @@ public class KdTree {
             StdDraw.line(node.key.x(), node.rect.ymin(), node.key.x(), node.rect.ymax());
         }
         StdDraw.setPenColor(StdDraw.BLACK);
-        StdDraw.setPenRadius(0.02);
+        StdDraw.setPenRadius(0.01);
         node.key.draw();
         draw(node.leftBottom, !vertical);
         draw(node.rightTop, !vertical);
