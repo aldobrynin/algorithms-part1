@@ -66,14 +66,15 @@ public class KdTree {
     private boolean contains(Node node, Point2D p, boolean vertical) {
         if (node == null) return false;
         int cmp;
-        if (vertical) cmp = Double.compare(node.key.x(), p.x());
-        else cmp = Double.compare(node.key.y(), p.y());
+        if (vertical) cmp = Double.compare(p.x(), node.key.x());
+        else cmp = Double.compare(p.y(), node.key.y());
         if (cmp == 0) {
             if (vertical && Double.compare(node.key.y(), p.y()) == 0)
                 return true;
-
+            else if (!vertical && Double.compare(node.key.x(), p.x()) == 0)
+                return true;
         }
-        if (cmp > 0)
+        if (cmp >= 0)
             return contains(node.rightTop, p, !vertical);
         return contains(node.leftBottom, p, !vertical);
     }
