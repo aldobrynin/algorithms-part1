@@ -69,7 +69,7 @@ public class KdTree {
         if (vertical) cmp = Double.compare(node.key.x(), p.x());
         else cmp = Double.compare(node.key.y(), p.y());
         if (cmp == 0) {
-            if (node.key.equals(p))
+            if (vertical && Double.compare(node.key.y(), p.y()) == 0)
                 return true;
 
         }
@@ -95,8 +95,8 @@ public class KdTree {
             StdDraw.line(node.key.x(), node.rect.ymin(), node.key.x(), node.rect.ymax());
         }
         StdDraw.setPenColor(StdDraw.BLACK);
-        StdDraw.setPenRadius(0.01);
-        StdDraw.point(node.key.x(), node.key.y());
+        StdDraw.setPenRadius(0.02);
+        node.key.draw();
         draw(node.leftBottom, !vertical);
         draw(node.rightTop, !vertical);
     }

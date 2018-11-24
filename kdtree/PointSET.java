@@ -1,9 +1,3 @@
-/* *****************************************************************************
- *  Name:
- *  Date:
- *  Description:
- **************************************************************************** */
-
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.RectHV;
@@ -37,17 +31,14 @@ public class PointSET {
         return set.contains(p);
     }
 
-    public void draw()                         // draw all points to standard draw
-    {
+    public void draw() {
         StdDraw.setPenColor(StdDraw.BLACK);
-        StdDraw.setPenRadius(0.01);
+        StdDraw.setPenRadius(0.02);
         for (Point2D p : set)
-            StdDraw.point(p.x(), p.y());
+            p.draw();
     }
 
-    public Iterable<Point2D> range(
-            RectHV rect)             // all points that are inside the rectangle (or on the boundary)
-    {
+    public Iterable<Point2D> range(RectHV rect) {
         checkForNull(rect);
         Queue<Point2D> points = new Queue<>();
         for (Point2D point : set) {
