@@ -1,4 +1,5 @@
 import edu.princeton.cs.algs4.Point2D;
+import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.StdDraw;
 
@@ -101,8 +102,17 @@ public class KdTree {
     }
 
     public Iterable<Point2D> range(RectHV rect) {
+        Queue<Point2D> points = new Queue<>();
+        range(root, rect, points);
+        return points;
+    }
 
-        return null;
+    public void range(Node node, RectHV rect, Queue<Point2D> points) {
+        if (node == null) return;
+        if (!node.rect.intersects(rect)) return;
+        if (rect.contains(node.key)) points.enqueue(node.key);
+        range(node.leftBottom, rect, points);
+        range(node.rightTop, rect, points);
     }
 
     public Point2D nearest(Point2D p) {
@@ -135,7 +145,7 @@ public class KdTree {
             nearestPoint = nearest(node.rightTop, queryPoint, nearestPoint, !vertical);
             nearestPoint = nearest(node.leftBottom, queryPoint, nearestPoint, !vertical);
         }
-        
+
         return nearestPoint;
     }
 
