@@ -60,7 +60,7 @@ public class PointSET {
     public Point2D nearest(Point2D p) {
         checkForNull(p);
         Point2D nearest = null;
-        double distanceToNearest = Double.MAX_VALUE;
+        double distanceToNearest = Double.POSITIVE_INFINITY;
         for (Point2D point : set) {
             double distance = p.distanceSquaredTo(point);
             if (distance >= distanceToNearest) continue;

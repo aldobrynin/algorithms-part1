@@ -107,7 +107,7 @@ public class KdTree {
         return points;
     }
 
-    public void range(Node node, RectHV rect, Queue<Point2D> points) {
+    private void range(Node node, RectHV rect, Queue<Point2D> points) {
         if (node == null) return;
         if (!node.rect.intersects(rect)) return;
         if (rect.contains(node.key)) points.enqueue(node.key);
@@ -151,8 +151,8 @@ public class KdTree {
 
 
     private static class Node {
-        private Point2D key;
-        private RectHV rect;
+        private final Point2D key;
+        private final RectHV rect;
         private Node leftBottom;
         private Node rightTop;
 
