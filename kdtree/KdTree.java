@@ -107,26 +107,36 @@ public class KdTree {
 
     public Point2D nearest(Point2D p) {
 
-        return nearest(root, p);
+        return nearest(root, p, null, true);
     }
 
-    private Point2D nearest(Node node, Point2D p) {
-        if (node == null) return null;
-        if (!node.rect.contains(p)) return null;
-        double distance = node.key.distanceSquaredTo(p);
+    private Point2D nearest(Node node, Point2D queryPoint, Point2D nearestPoint,
+                            boolean vertical) {
+        if (node == null) return nearestPoint;
+
+        if (nearestPoint != null
+                && nearestPoint
+                .distanceSquaredTo(queryPoint) < node.rect.distanceSquaredTo(queryPoint))
+            return nearestPoint;
+
+        if (nearestPoint == null ||
+                node.key.distanceSquaredTo(queryPoint) < nearestPoint
+                        .distanceSquaredTo(queryPoint))
+            nearestPoint = node.key;
 
 
-        Point2D left = nearest(node.leftBottom, p);
-        Point2D right = nearest(node.rightTop, p);
-        double lDistance = left != null ? left.distanceSquaredTo(p) : Double.MAX_VALUE;
-        double rDistance = right != null ? right.distanceSquaredTo(p) : Double.MAX_VALUE;
-        if (lDistance < distance) {
-            if (lDistance < rDistance)
-                return left;
-            return right;
+        if ((vertical && queryPoint.x() < node.key.x()) ||
+                (!vertical && queryPoint.y() < node.key.y())
+        ) {
+            nearestPoint = nearest(node.leftBottom, queryPoint, nearestPoint, !vertical);
+            nearestPoint = nearest(node.rightTop, queryPoint, nearestPoint, !vertical);
         }
-        if (rDistance < distance) return right;
-        return node.key;
+        else {
+            nearestPoint = nearest(node.rightTop, queryPoint, nearestPoint, !vertical);
+            nearestPoint = nearest(node.leftBottom, queryPoint, nearestPoint, !vertical);
+        }
+        
+        return nearestPoint;
     }
 
 
