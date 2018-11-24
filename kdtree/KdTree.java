@@ -9,6 +9,7 @@ public class KdTree {
     private int size = 0;
 
     public void insert(Point2D point) {
+        checkForNull(point);
         this.root = insert(root, root == null ? new RectHV(0, 0, 1, 1) : root.rect, point, true);
     }
 
@@ -60,6 +61,7 @@ public class KdTree {
     }
 
     public boolean contains(Point2D p) {
+        checkForNull(p);
         return contains(root, p, true);
     }
 
@@ -103,6 +105,7 @@ public class KdTree {
     }
 
     public Iterable<Point2D> range(RectHV rect) {
+        checkForNull(rect);
         Queue<Point2D> points = new Queue<>();
         range(root, rect, points);
         return points;
@@ -117,7 +120,7 @@ public class KdTree {
     }
 
     public Point2D nearest(Point2D p) {
-
+        checkForNull(p);
         return nearest(root, p, null, true);
     }
 
@@ -150,6 +153,9 @@ public class KdTree {
         return nearestPoint;
     }
 
+    private void checkForNull(Object object) {
+        if (object == null) throw new IllegalArgumentException();
+    }
 
     private static class Node {
         private final Point2D key;
